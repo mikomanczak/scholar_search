@@ -15,7 +15,7 @@ This tool automates the process by:
 - Removing duplicate papers
 - Returning a single, clean list for further review
 
-Ideal for systematic literature reviews and exploratory research.
+![Explanatory diagram](docs/explanatory_diagram.png)
 
 ## Web
 
