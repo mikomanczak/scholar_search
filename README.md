@@ -24,20 +24,6 @@ Ideal for systematic literature reviews and exploratory research.
 - 🧹 Automatic deduplication
 - 📄 Export results (CSV/JSON)
 
-## Installation
-
-### CLI
-
-```bash
-npm install -g semantic-scholar-search-merger
-```
-
-or
-
-```bash
-npx semantic-scholar-search-merger
-```
-
 ## Usage
 
 ### CLI
