@@ -16,6 +16,16 @@ Ideal for systematic literature reviews and exploratory research.
 
 ## Usage
 
+### Web
+
+Visit:
+
+```
+https://your-website.com
+```
+
+Enter your keywords and download the merged results.
+
 ### CLI
 
 ```bash
@@ -33,33 +43,6 @@ Found:
 - 146 unique papers
 - 32 duplicates removed
 ```
-
-### Web
-
-Visit:
-
-```
-https://your-website.com
-```
-
-Enter your keywords and download the merged results.
-
-## Example
-
-Input keywords:
-
-```
-battery electric vehicle
-hybrid electric vehicle
-electric mobility
-```
-
-Output:
-
-- One combined list
-- Duplicate papers removed
-- Sorted by relevance *(or citations/date, depending on implementation)*
-
 
 ## Publication
 
