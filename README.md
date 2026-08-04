@@ -18,11 +18,7 @@ Ideal for systematic literature reviews and exploratory research.
 
 ### Web
 
-Visit:
-
-```
-https://your-website.com
-```
+Visit: [https://your-website.com](https://your-website.com)
 
 Enter your keywords and download the merged results.
 
@@ -32,16 +28,13 @@ Enter your keywords and download the merged results.
 ssm search \
   --keywords "battery electric vehicle" \
   --keywords "hybrid electric vehicle" \
-  --limit 100
 ```
 
 Example output:
 
 ```
-Found:
-- 178 papers
-- 146 unique papers
-- 32 duplicates removed
+- Found 178 unique papers:
+- Saved papers in search_results.json and search_results.csv  
 ```
 
 ## Publication
