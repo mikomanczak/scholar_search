@@ -21,14 +21,10 @@ const alreadySavedPapers = new Set<string>();
 
 const authHeaders = (apiKey?: string) => apiKey ? { 'x-api-key': apiKey } : undefined;
 
-async function getPaperDetails(paperID: string, apiKey?: string): Promise<PaperDetails | undefined> {
-  try {
-    console.log(`fetching paper details from https://api.semanticscholar.org/graph/v1/paper/${paperID}`);
-    const paperDetails = await axios.get(`https://api.semanticscholar.org/graph/v1/paper/${paperID}?fields=year,authors,externalIds`, { headers: authHeaders(apiKey) });
-    return paperDetails.data;
-  } catch (error) {
-    console.error(`Error getting paper details for paper ID "${paperID}":`, (error as Error).message);
-  }
+async function getPaperDetails(paperID: string, apiKey?: string): Promise<PaperDetails> {
+  console.log(`fetching paper details from https://api.semanticscholar.org/graph/v1/paper/${paperID}`);
+  const paperDetails = await axios.get(`https://api.semanticscholar.org/graph/v1/paper/${paperID}?fields=year,authors,externalIds`, { headers: authHeaders(apiKey) });
+  return paperDetails.data;
 }
 
 function getAuthorsNames(listOfAuthors: Author[]): string {
@@ -36,23 +32,18 @@ function getAuthorsNames(listOfAuthors: Author[]): string {
 }
 
 async function searchForPaper(keyword: string, csvStream: fastcsv.CsvFormatterStream<fastcsv.FormatterRow, fastcsv.FormatterRow>, apiKey?: string): Promise<void> {
-  try {
-    console.log('searching for keyword: ' + keyword + '...');
-    const response = await axios.get(`https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(keyword)}&offset=0&limit=10`, { headers: authHeaders(apiKey) });
-    const listOfPapers: Paper[] = response.data.data;
-    for (const paper of listOfPapers) {
-      if (alreadySavedPapers.has(paper.paperId)) { continue; }
-      csvStream.write([paper.paperId]);
-      csvStream.write([paper.title]);
-      const paperDetails = await getPaperDetails(paper.paperId, apiKey);
-      if (!paperDetails) continue;
-      csvStream.write([paperDetails.year]);
-      csvStream.write([getAuthorsNames(paperDetails.authors)]);
-      csvStream.write([paperDetails.externalIds.DOI]);
-      alreadySavedPapers.add(paper.paperId);
-    }
-  } catch (error) {
-    console.error(`Error searching for keyword "${keyword}":`, (error as Error).message);
+  console.log('searching for keyword: ' + keyword + '...');
+  const response = await axios.get(`https://api.semanticscholar.org/graph/v1/paper/search?query=${encodeURIComponent(keyword)}&offset=0&limit=10`, { headers: authHeaders(apiKey) });
+  const listOfPapers: Paper[] = response.data.data;
+  for (const paper of listOfPapers) {
+    if (alreadySavedPapers.has(paper.paperId)) { continue; }
+    csvStream.write([paper.paperId]);
+    csvStream.write([paper.title]);
+    const paperDetails = await getPaperDetails(paper.paperId, apiKey);
+    csvStream.write([paperDetails.year]);
+    csvStream.write([getAuthorsNames(paperDetails.authors)]);
+    csvStream.write([paperDetails.externalIds.DOI]);
+    alreadySavedPapers.add(paper.paperId);
   }
 }
 
@@ -61,8 +52,11 @@ export async function runSearch(keywords: string[], apiKey?: string, outputCsvFi
   const csvStream = fastcsv.format({ headers: true });
   csvStream.pipe(writeStream);
 
-  for (const keyword of keywords) {
-    await searchForPaper(keyword, csvStream, apiKey);
+  try {
+    for (const keyword of keywords) {
+      await searchForPaper(keyword, csvStream, apiKey);
+    }
+  } finally {
+    csvStream.end();
   }
-  csvStream.end();
 }
