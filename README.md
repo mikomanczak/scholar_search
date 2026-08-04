@@ -2,9 +2,9 @@
 
 A tool for searching the Semantic Scholar database with multiple keywords and combining the results into a single deduplicated list.
 
-Available as both:
-- 🌐 A web application
-- 💻 A command-line interface (CLI)
+Available as:
+- web app
+- CLI
 
 ## Why?
 
@@ -70,13 +70,6 @@ Output:
 - Duplicate papers removed
 - Sorted by relevance *(or citations/date, depending on implementation)*
 
-## Use Cases
-
-- Systematic literature reviews
-- Academic research
-- Survey papers
-- State-of-the-art searches
-- Research project preparation
 
 ## Publication
 
