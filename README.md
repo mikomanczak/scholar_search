@@ -2,10 +2,6 @@
 
 A tool for searching the Semantic Scholar database with multiple keywords and combining the results into a single deduplicated list.
 
-Available as:
-- web app
-- CLI
-
 ## Why?
 
 Searching for scientific papers often requires trying multiple keywords or phrases. Doing this manually results in overlapping results and unnecessary duplicate papers.
@@ -17,12 +13,6 @@ This tool automates the process by:
 - Returning a single, clean list for further review
 
 Ideal for systematic literature reviews and exploratory research.
-
-## Features
-
-- 🔍 Search Semantic Scholar with multiple keywords
-- 🧹 Automatic deduplication
-- 📄 Export results (CSV/JSON)
 
 ## Usage
 
