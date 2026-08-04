@@ -1,10 +1,13 @@
-# Augmented Search for Semantic Scholar
+## Context
 
-A tool for searching the Semantic Scholar database with multiple keywords and combining the results into a single deduplicated list.
+Semantic Scholar is an open-access academic search engine developed by the Allen Institute for AI. 
+It helps researchers discover relevant papers and explore citations.
 
-## Why?
+## Problem
 
 Searching for scientific papers often requires trying multiple keywords or phrases. Doing this manually results in overlapping results and unnecessary duplicate papers.
+
+## Solution
 
 This tool automates the process by:
 - Searching Semantic Scholar for each keyword
