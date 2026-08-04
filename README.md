@@ -1,6 +1,6 @@
 ## Context
 
-Semantic Scholar is an open-access academic search engine developed by the Allen Institute for AI. 
+[Semantic Scholar](https://www.semanticscholar.org/) is an open-access academic search engine developed by the Allen Institute for AI. 
 It helps researchers discover relevant papers and explore citations.
 
 ## Problem
