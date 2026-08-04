@@ -1,14 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import readline from 'readline';
 import csvParser from 'csv-parser';
+import { select, input, confirm } from '@inquirer/prompts';
 
 const inputDir = path.join(__dirname, 'input');
 const jsonInputPath = path.join(inputDir, 'input.json');
 const csvInputPath = path.join(inputDir, 'input.csv');
-
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-const ask = (q: string): Promise<string> => new Promise(res => rl.question(q, res));
 
 async function readKeywordsFromCsv(filePath: string): Promise<string[]> {
   return new Promise((resolve, reject) => {
@@ -29,36 +26,45 @@ function readKeywordsFromJson(filePath: string): string[] {
 }
 
 export async function getKeywords(): Promise<string[]> {
-  try {
-    const source = (await ask('Input keywords from (f)ile or (t)erminal? ')).trim().toLowerCase();
+  const source = await select({
+    message: 'How would you like to provide keywords?',
+    choices: [
+      { name: 'Type them in the terminal', value: 'terminal' },
+      { name: 'Load them from a file', value: 'file' },
+    ],
+  });
 
-    if (source.startsWith('f')) {
-      const format = (await ask('Choose format: (j)son or (c)sv? ')).trim().toLowerCase();
-      fs.mkdirSync(inputDir, { recursive: true });
+  if (source === 'file') {
+    const format = await select({
+      message: 'Which file format?',
+      choices: [
+        { name: 'JSON', value: 'json' },
+        { name: 'CSV', value: 'csv' },
+      ],
+    });
 
-      if (format.startsWith('j')) {
-        if (!fs.existsSync(jsonInputPath)) {
-          fs.writeFileSync(jsonInputPath, JSON.stringify({ keywords: [] }, null, 2));
-        }
-        await ask(`Please enter your keywords in ${jsonInputPath}, then press Enter to continue... `);
-        return readKeywordsFromJson(jsonInputPath);
+    fs.mkdirSync(inputDir, { recursive: true });
+
+    if (format === 'json') {
+      if (!fs.existsSync(jsonInputPath)) {
+        fs.writeFileSync(jsonInputPath, JSON.stringify({ keywords: [] }, null, 2));
       }
-
-      if (!fs.existsSync(csvInputPath)) {
-        fs.writeFileSync(csvInputPath, 'keyword\n');
-      }
-      await ask(`Please enter your keywords in ${csvInputPath} (one per row under "keyword" header), then press Enter to continue... `);
-      return readKeywordsFromCsv(csvInputPath);
+      await input({ message: `Enter your keywords in ${jsonInputPath}, then press Enter to continue` });
+      return readKeywordsFromJson(jsonInputPath);
     }
 
-    while (true) {
-      const raw = await ask('Enter keywords (comma-separated): ');
-      const keywords = raw.split(',').map(k => k.trim()).filter(Boolean);
-      console.log('You entered:', keywords);
-      const confirm = (await ask('Are these correct and do you want to search? (y/n) ')).trim().toLowerCase();
-      if (confirm.startsWith('y')) return keywords;
+    if (!fs.existsSync(csvInputPath)) {
+      fs.writeFileSync(csvInputPath, 'keyword\n');
     }
-  } finally {
-    rl.close();
+    await input({ message: `Enter your keywords in ${csvInputPath} (one per row under "keyword" header), then press Enter to continue` });
+    return readKeywordsFromCsv(csvInputPath);
+  }
+
+  while (true) {
+    const raw = await input({ message: 'Enter keywords (comma-separated):' });
+    const keywords = raw.split(',').map(k => k.trim()).filter(Boolean);
+    console.log('You entered:', keywords);
+    const ok = await confirm({ message: 'Are these correct and do you want to search?' });
+    if (ok) return keywords;
   }
 }
