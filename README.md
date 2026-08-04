@@ -17,15 +17,13 @@ This tool automates the process by:
 
 Ideal for systematic literature reviews and exploratory research.
 
-## Usage
-
-### Web
+## Web
 
 Visit: [https://your-website.com](https://your-website.com)
 
 Enter your keywords and download the merged results.
 
-### CLI
+## CLI
 
 ```bash
 ssm search \
