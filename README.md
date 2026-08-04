@@ -15,7 +15,7 @@ This tool automates the process by:
 - Removing duplicate papers
 - Returning a single, clean list for further review
 
-![Explanatory diagram](docs/explanatory_diagram.png)
+![Explanatory diagram](docs/explanatory-diagram.png)
 
 ## Web
 
