@@ -137,7 +137,7 @@ button {
 
 .queries-card {
   display: flex;
-  min-height: 570px;
+  min-height: 770px;
   flex-direction: column;
 }
 
