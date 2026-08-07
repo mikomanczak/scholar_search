@@ -15,9 +15,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background:
-    radial-gradient(circle at 50% -20%, rgb(30 56 88 / 28%), transparent 44%),
-    linear-gradient(180deg, #08131f 0%, #06101a 100%);
+  background-color: #0d1117;
 }
 
 button,
@@ -32,7 +30,7 @@ button {
 }
 
 .app-shell {
-  width: min(1180px, 100%);
+  width: min(1480px, 100%);
   min-height: 100vh;
   margin: 0 auto;
   padding: 24px 16px 18px;
@@ -111,24 +109,25 @@ button {
 
 .form-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.38fr) minmax(340px, 1fr);
+  grid-template-columns: minmax(0, 3fr) minmax(280px, 1fr);
   gap: 12px;
 }
 
 .card {
   border: 1px solid #253244;
   border-radius: 8px;
-  background: rgb(10 21 34 / 80%);
+  background: #0d1117;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 2%);
 }
 
-.card h2 {
+.card-heading {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 0;
   font-size: 16px;
   font-weight: 650;
+  background-color: #151b23;
 }
 
 .queries-card,

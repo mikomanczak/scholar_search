@@ -39,7 +39,7 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
     <form className="input-form" onSubmit={handleSubmit}>
       <div className="form-grid">
         <section className="card queries-card" aria-labelledby="queries-heading">
-          <h2 id="queries-heading">Queries</h2>
+          <h2 className="card-heading">Queries</h2>
           <label className="field-label" htmlFor="keywords">
             Enter queries to search for (one per line) <InfoIcon />
           </label>
@@ -59,7 +59,7 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
         </section>
 
         <section className="card settings-card" aria-labelledby="settings-heading">
-          <h2 id="settings-heading">Search settings</h2>
+          <h2 className="card-heading" id="settings-heading">Search settings</h2>
 
           <label className="field-label" htmlFor="results-per-keyword">
             Results per query
@@ -117,15 +117,16 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
               <span />
             </button>
           </div>
+          <div className="submit-bar">
+            <button className="primary-button" type="submit" disabled={keywordCount === 0}>
+              <span className="search-icon" aria-hidden="true" />
+              Start Search
+            </button>
+          </div>
         </section>
       </div>
 
-      <div className="submit-bar">
-        <button className="primary-button" type="submit" disabled={keywordCount === 0}>
-          <span className="search-icon" aria-hidden="true" />
-          Start Search
-        </button>
-      </div>
+
     </form>
   );
 }
