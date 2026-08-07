@@ -40,7 +40,7 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
     <form className="input-form" onSubmit={handleSubmit}>
       <div className="form-grid">
         <section className="card queries-card" aria-labelledby="queries-heading">
-          <h2 className="card-heading">Queries</h2>
+          <h2 className="card-heading" id="queries-heading">Queries</h2>
           <label className="field-label" htmlFor="keywords">
             Enter queries to search for (one per line) <InfoIcon />
           </label>
