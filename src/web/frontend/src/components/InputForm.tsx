@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import HighlightedQueryEditor from './HighlightedQueryEditor';
 import InfoIcon from './InfoIcon';
 import QuerySyntaxHelp from './QuerySyntaxHelp';
 
@@ -44,12 +45,11 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
             Enter queries to search for (one per line) <InfoIcon />
           </label>
           <div className="queries-content">
-            <textarea
+            <HighlightedQueryEditor
               id="keywords"
               value={keywordText}
-              onChange={event => handleKeywordChange(event.target.value)}
+              onChange={handleKeywordChange}
               placeholder="Enter up to 20 queries"
-              spellCheck={false}
             />
             <QuerySyntaxHelp />
           </div>
