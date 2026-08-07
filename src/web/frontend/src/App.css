@@ -207,6 +207,109 @@ textarea {
   font-size: 13px;
 }
 
+.query-editor {
+  position: relative;
+  min-height: 405px;
+}
+
+.query-editor__highlight,
+.query-editor__textarea {
+  min-height: 405px;
+  padding: 14px;
+  border: 1px solid #253348;
+  border-radius: 7px;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 2.15;
+  letter-spacing: normal;
+  tab-size: 4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.query-editor__highlight {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  background: #0b1624;
+  color: #edf3fc;
+  pointer-events: none;
+  user-select: none;
+  scrollbar-width: none;
+}
+
+.query-editor__highlight::-webkit-scrollbar {
+  display: none;
+}
+
+.query-editor__textarea {
+  position: relative;
+  width: 100%;
+  resize: none;
+  background: transparent;
+  color: transparent;
+  caret-color: #edf3fc;
+  outline: none;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.query-editor__textarea::selection {
+  background: rgb(53 111 239 / 35%);
+  color: transparent;
+}
+
+.query-editor__textarea:focus {
+  border-color: #356fef;
+  box-shadow: 0 0 0 3px rgb(53 111 239 / 14%);
+}
+
+.qtok--and {
+  color: #7ee2a8;
+  font-weight: 600;
+}
+
+.qtok--or {
+  color: #f3b344;
+  font-weight: 600;
+}
+
+.qtok--not {
+  color: #ff7a85;
+  font-weight: 600;
+}
+
+.qtok--phrase {
+  color: #ffd479;
+}
+
+.qtok--phrase-open {
+  color: #ffd479;
+  text-decoration: underline wavy #ff7a85;
+}
+
+.qtok--wildcard {
+  color: #c792ea;
+  font-weight: 600;
+}
+
+.qtok--paren {
+  color: #7fb8ff;
+  font-weight: 600;
+}
+
+.qtok--proximity {
+  color: #c792ea;
+  font-weight: 600;
+}
+
+.qtok--term {
+  color: #edf3fc;
+}
+
 textarea::placeholder,
 input::placeholder {
   color: #69778a;
