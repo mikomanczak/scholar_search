@@ -111,8 +111,8 @@ button {
 
 .form-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: 16px;
+  grid-template-columns: minmax(0, 1.38fr) minmax(340px, 1fr);
+  gap: 12px;
 }
 
 .card {
@@ -131,15 +131,14 @@ button {
   font-weight: 650;
 }
 
-.keywords-card,
-.settings-card,
-.about-card {
-  padding: 24px;
+.queries-card,
+.settings-card {
+  padding: 20px;
 }
 
-.keywords-card {
+.queries-card {
   display: flex;
-  min-height: 580px;
+  min-height: 570px;
   flex-direction: column;
 }
 
@@ -157,12 +156,27 @@ button {
   font-weight: 700;
 }
 
+.queries-card .field-label,
 .field-label,
 .year-fieldset legend {
-  display: block;
-  margin: 22px 0 10px;
+  margin: 18px 0 10px;
   color: #c2cad6;
-  font-size: 14px;
+  font-size: 13px;
+}
+
+.queries-card .field-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 16px;
+}
+
+.queries-content {
+  display: grid;
+  min-height: 405px;
+  grid-template-columns: minmax(210px, 0.9fr) minmax(260px, 1.1fr);
+  flex: 1;
+  gap: 18px;
 }
 
 textarea,
@@ -187,11 +201,11 @@ input[type="number"]:focus {
 }
 
 textarea {
-  min-height: 330px;
-  flex: 1;
-  padding: 16px;
+  min-height: 405px;
+  padding: 14px;
   resize: vertical;
-  line-height: 2.2;
+  line-height: 2.15;
+  font-size: 13px;
 }
 
 textarea::placeholder,
@@ -200,42 +214,64 @@ input::placeholder {
 }
 
 .keyword-count {
-  margin: 12px 0 18px;
+  margin: 12px 0 0;
   color: #99a5b7;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
 }
 
-.keyword-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
+.syntax-help {
+  padding-left: 18px;
+  border-left: 1px solid #263345;
+  color: #a7b1c0;
+  font-size: 11px;
+  line-height: 1.45;
 }
 
-.secondary-button {
-  min-height: 38px;
-  padding: 8px 14px;
-  border: 1px solid #2b394d;
-  border-radius: 6px;
-  background: #0a1522;
-  color: #c9d2df;
-  cursor: pointer;
-  font-size: 13px;
+.syntax-heading {
+  margin: 0 0 8px;
+  color: #c2cad6;
+  font-size: 12px;
 }
 
-.secondary-button:hover {
-  border-color: #46607e;
-  background: #101d2d;
+.syntax-examples-heading {
+  margin: 12px 0 7px;
+  color: #8996a8;
 }
 
-.settings-column {
+.syntax-list {
   display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 16px;
+  gap: 4px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.syntax-list li {
+  display: grid;
+  grid-template-columns: 7px max-content 1fr;
+  align-items: start;
+  gap: 7px;
+}
+
+.syntax-list li::before {
+  margin-top: 5px;
+  color: #6f7c8e;
+  content: "•";
+}
+
+.syntax-list code {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: #1b2635;
+  color: #d4dbe5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 10px;
+  white-space: nowrap;
 }
 
 .settings-card {
-  min-height: 320px;
+  min-height: 570px;
 }
 
 select,
@@ -348,8 +384,8 @@ select {
 }
 
 .submit-bar {
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 14px;
+  padding-top: 14px;
   border-top: 1px solid #1d2a3a;
 }
 
@@ -360,17 +396,18 @@ select {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px solid #356ff1;
+  border: 1px solid #2a3749;
   border-radius: 6px;
-  background: linear-gradient(90deg, #225dde, #286bf5);
-  box-shadow: 0 7px 22px rgb(21 82 222 / 20%);
+  background: #0b1622;
+  box-shadow: none;
   color: white;
   cursor: pointer;
   font-weight: 650;
 }
 
 .primary-button:hover {
-  background: linear-gradient(90deg, #2a67ea, #3478ff);
+  border-color: #42536b;
+  background: #101d2b;
 }
 
 .primary-button:disabled {
@@ -432,21 +469,31 @@ select {
     grid-template-columns: 1fr;
   }
 
-  .keywords-card {
-    min-height: 520px;
+  .queries-card,
+  .settings-card {
+    min-height: auto;
   }
 
-  .keywords-card,
-  .settings-card,
-  .about-card {
+  .queries-card,
+  .settings-card {
     padding: 18px;
   }
 }
 
-@media (max-width: 430px) {
+@media (max-width: 560px) {
   .step__label {
     max-width: 80px;
     white-space: normal;
+  }
+
+  .queries-content {
+    grid-template-columns: 1fr;
+  }
+
+  .syntax-help {
+    padding: 18px 0 0;
+    border-top: 1px solid #263345;
+    border-left: 0;
   }
 
   .year-range {
@@ -457,7 +504,4 @@ select {
     display: none;
   }
 
-  .keyword-actions {
-    flex-direction: column;
-  }
 }
