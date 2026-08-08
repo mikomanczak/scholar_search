@@ -1,35 +1,24 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
+import { useSearch } from '../context/SearchContext';
 import HighlightedQueryEditor from './HighlightedQueryEditor';
 import InfoIcon from './InfoIcon';
 import QuerySyntaxHelp from './QuerySyntaxHelp';
 
-const EXAMPLE_KEYWORDS = [
-  'battery electric vehicle',
-  'BEV',
-  'electric cars',
-  'EV battery',
-  'lithium ion battery',
-  'battery technology',
-  'range anxiety',
-];
-
 export default function InputForm({ onSearch }: { onSearch: () => void }) {
-  const [keywordText, setKeywordText] = useState(EXAMPLE_KEYWORDS.join('\n'));
-  const [resultsPerKeyword, setResultsPerKeyword] = useState('50');
-  const [startYear, setStartYear] = useState('2010');
-  const [endYear, setEndYear] = useState('2024');
-  const [openAccessOnly, setOpenAccessOnly] = useState(false);
-
-  const keywords = keywordText
-    .split(/\r?\n/)
-    .map(keyword => keyword.trim())
-    .filter(Boolean);
-  const keywordCount = Math.min(keywords.length, 20);
-
-  const handleKeywordChange = (value: string) => {
-    const lines = value.split(/\r?\n/);
-    setKeywordText(lines.slice(0, 20).join('\n'));
-  };
+  const {
+    keywordText,
+    setKeywordText,
+    keywordCount,
+    resultsPerKeyword,
+    setResultsPerKeyword,
+    startYear,
+    setStartYear,
+    endYear,
+    setEndYear,
+    openAccessOnly,
+    setOpenAccessOnly,
+    maxKeywords,
+  } = useSearch();
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,13 +37,13 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
             <HighlightedQueryEditor
               id="keywords"
               value={keywordText}
-              onChange={handleKeywordChange}
-              placeholder="Enter up to 20 queries"
+              onChange={setKeywordText}
+              placeholder={`Enter up to ${maxKeywords} queries`}
             />
             <QuerySyntaxHelp />
           </div>
           <p className="keyword-count" aria-live="polite">
-            {keywordCount} / 20 queries
+            {keywordCount} / {maxKeywords} queries
           </p>
         </section>
 
