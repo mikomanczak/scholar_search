@@ -54,20 +54,24 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
         <section className="card settings-card" aria-labelledby="settings-heading">
           <h2 className="card-heading" id="settings-heading">Search settings</h2>
 
-          <label className="field-label" htmlFor="results-per-keyword">
-            Results per query
-          </label>
-          <select
-            id="results-per-keyword"
-            value={resultsPerKeyword}
-            onChange={event => setResultsPerKeyword(event.target.value)}
-          >
-            <option value="25">25</option>
-            <option value="50">50 (recommended)</option>
-            <option value="100">100</option>
-          </select>
+          <div className="filter-group">
+            <label className="field-label" htmlFor="results-per-keyword">
+              Max results per query
+            </label>
+            <input
+              id="results-per-keyword"
+              type="number"
+              min="1"
+              max="100"
+              step="1"
+              inputMode="numeric"
+              value={resultsPerKeyword}
+              onChange={event => setResultsPerKeyword(event.target.value)}
+              placeholder="50"
+            />
+          </div>
 
-          <fieldset className="year-fieldset">
+          <fieldset className="filter-group year-fieldset">
             <legend>Year range (optional)</legend>
             <div className="year-range">
               <input
@@ -92,21 +96,23 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
             </div>
           </fieldset>
 
-          <label className="field-label" htmlFor="min-citations">
-            Minimum number of citations (optional)
-          </label>
-          <input
-            id="min-citations"
-            type="number"
-            min="0"
-            step="1"
-            inputMode="numeric"
-            value={minCitations}
-            onChange={event => setMinCitations(event.target.value)}
-            placeholder="Any"
-          />
+          <div className="filter-group">
+            <label className="field-label" htmlFor="min-citations">
+              Minimum number of citations (optional)
+            </label>
+            <input
+              id="min-citations"
+              type="number"
+              min="0"
+              step="1"
+              inputMode="numeric"
+              value={minCitations}
+              onChange={event => setMinCitations(event.target.value)}
+              placeholder="Any"
+            />
+          </div>
 
-          <fieldset className="publication-types-fieldset">
+          <fieldset className="filter-group publication-types-fieldset">
             <legend>Publication type (optional)</legend>
             <div className="publication-types">
               {PUBLICATION_TYPES.map(type => {
@@ -127,7 +133,7 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
             </div>
           </fieldset>
 
-          <div className="toggle-row">
+          <div className="filter-group toggle-row">
             <div>
               <span className="toggle-title">Open Access Only</span>
               <span className="toggle-description">

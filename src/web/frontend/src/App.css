@@ -160,14 +160,16 @@ button {
 
 .queries-card .field-label,
 .field-label,
-.year-fieldset legend {
+.year-fieldset legend,
+.publication-types-fieldset legend {
   margin: 18px 0 10px;
   color: #c2cad6;
   font-size: 13px;
 }
 
 .card-heading + .field-label,
-.card-heading + .year-fieldset legend {
+.card-heading + .year-fieldset legend,
+.card-heading + .publication-types-fieldset legend {
   margin-top: 16px;
 }
 
@@ -386,6 +388,28 @@ input::placeholder {
   display: flex;
   min-height: 570px;
   flex-direction: column;
+  background: #0d1117;
+}
+
+.settings-card .field-label,
+.settings-card .year-fieldset legend,
+.settings-card .publication-types-fieldset legend {
+  display: block;
+  margin: 0 0 8px;
+  color: #c9d1d9;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.filter-group {
+  padding: 16px 0;
+  border-top: 1px solid #21262d;
+}
+
+.card-heading + .filter-group {
+  border-top: 0;
+  padding-top: 16px;
 }
 
 .settings-card .submit-bar {
@@ -394,18 +418,22 @@ input::placeholder {
 
 select,
 input[type="number"] {
-  height: 46px;
-  padding: 0 14px;
+  height: 40px;
+  padding: 0 12px;
+  border-color: #30363d;
+  border-radius: 6px;
+  background-color: #010409;
+  color: #c9d1d9;
 }
 
 select {
   appearance: none;
   background-image:
-    linear-gradient(45deg, transparent 50%, #8c99aa 50%),
-    linear-gradient(135deg, #8c99aa 50%, transparent 50%);
+    linear-gradient(45deg, transparent 50%, #8b949e 50%),
+    linear-gradient(135deg, #8b949e 50%, transparent 50%);
   background-position:
-    calc(100% - 19px) 20px,
-    calc(100% - 14px) 20px;
+    calc(100% - 18px) 17px,
+    calc(100% - 13px) 17px;
   background-repeat: no-repeat;
   background-size: 5px 5px, 5px 5px;
 }
@@ -437,17 +465,20 @@ select {
 .publication-types {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 9px 8px;
 }
 
 .chip {
-  padding: 6px 12px;
-  border: 1px solid #253348;
-  border-radius: 999px;
-  background: #0b1624;
-  color: #c2cad6;
+  min-height: 30px;
+  padding: 6px 11px;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  background: #161b22;
+  color: #c9d1d9;
   cursor: pointer;
   font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
   transition:
     border-color 150ms ease,
     background 150ms ease,
@@ -455,19 +486,19 @@ select {
 }
 
 .chip:hover {
-  border-color: #42536b;
-  background: #101d2b;
+  border-color: #8b949e;
+  background: #21262d;
 }
 
 .chip--selected {
-  border-color: #2a65eb;
-  background: #2867ef;
+  border-color: #2ea043;
+  background: rgb(35 134 54 / 18%);
   color: white;
 }
 
 .chip--selected:hover {
-  border-color: #2a65eb;
-  background: #2360db;
+  border-color: #3fb950;
+  background: rgb(35 134 54 / 26%);
 }
 
 .toggle-row {
@@ -475,7 +506,13 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  margin-top: 26px;
+  margin-top: 0;
+  padding: 16px 0 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .toggle-title,
@@ -484,13 +521,14 @@ select {
 }
 
 .toggle-title {
-  color: #dce3ed;
+  color: #c9d1d9;
   font-size: 14px;
+  font-weight: 650;
 }
 
 .toggle-description {
-  margin-top: 6px;
-  color: #778598;
+  margin-top: 4px;
+  color: #8b949e;
   font-size: 12px;
 }
 
@@ -500,9 +538,9 @@ select {
   height: 25px;
   flex: 0 0 auto;
   padding: 0;
-  border: 1px solid #27364a;
+  border: 1px solid #30363d;
   border-radius: 999px;
-  background: #263347;
+  background: #21262d;
   cursor: pointer;
   transition: background 160ms ease;
 }
@@ -520,8 +558,8 @@ select {
 }
 
 .toggle--on {
-  border-color: #2a65eb;
-  background: #2867ef;
+  border-color: #2ea043;
+  background: #238636;
 }
 
 .toggle--on span {
@@ -556,9 +594,9 @@ select {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  border: 1px solid #2a3749;
+  border: 1px solid rgb(240 246 252 / 10%);
   border-radius: 6px;
-  background: #0b1622;
+  background: #238636;
   box-shadow: none;
   color: white;
   cursor: pointer;
@@ -566,15 +604,15 @@ select {
 }
 
 .primary-button:hover {
-  border-color: #42536b;
-  background: #101d2b;
+  border-color: rgb(240 246 252 / 10%);
+  background: #2ea043;
 }
 
 .primary-button:disabled {
-  border-color: #31415a;
-  background: #26364d;
+  border-color: rgb(240 246 252 / 10%);
+  background: rgb(35 134 54 / 50%);
   box-shadow: none;
-  color: #8290a3;
+  color: rgb(255 255 255 / 80%);
   cursor: not-allowed;
 }
 
