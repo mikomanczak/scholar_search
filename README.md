@@ -21,7 +21,8 @@ This tool automates the process by:
 
 Visit: [https://your-website.com](https://your-website.com)
 
-Enter your keywords and download the merged results.
+![Explanatory diagram](docs/web-screenshot.jpg)
+
 
 ## CLI
 
