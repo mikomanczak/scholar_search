@@ -13,12 +13,32 @@ const EXAMPLE_KEYWORDS = [
   'range anxiety',
 ];
 
+export const PUBLICATION_TYPES = [
+  'Review',
+  'JournalArticle',
+  'CaseReport',
+  'ClinicalTrial',
+  'Conference',
+  'Dataset',
+  'Editorial',
+  'LettersAndComments',
+  'MetaAnalysis',
+  'News',
+  'Study',
+  'Book',
+  'BookSection',
+] as const;
+
+export type PublicationType = (typeof PUBLICATION_TYPES)[number];
+
 type PersistedState = {
   keywordText: string;
   resultsPerKeyword: string;
   startYear: string;
   endYear: string;
   openAccessOnly: boolean;
+  minCitations: string;
+  publicationTypes: PublicationType[];
 };
 
 const DEFAULT_STATE: PersistedState = {
@@ -27,6 +47,8 @@ const DEFAULT_STATE: PersistedState = {
   startYear: '2010',
   endYear: '2024',
   openAccessOnly: false,
+  minCitations: '',
+  publicationTypes: [],
 };
 
 function loadPersistedState(): PersistedState {
@@ -35,6 +57,12 @@ function loadPersistedState(): PersistedState {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_STATE;
     const parsed = JSON.parse(raw) as Partial<PersistedState>;
+    const validTypes = new Set<string>(PUBLICATION_TYPES);
+    const publicationTypes = Array.isArray(parsed.publicationTypes)
+      ? (parsed.publicationTypes.filter(
+          (value): value is PublicationType => typeof value === 'string' && validTypes.has(value),
+        ))
+      : DEFAULT_STATE.publicationTypes;
     return {
       keywordText: typeof parsed.keywordText === 'string' ? parsed.keywordText : DEFAULT_STATE.keywordText,
       resultsPerKeyword:
@@ -43,6 +71,8 @@ function loadPersistedState(): PersistedState {
       endYear: typeof parsed.endYear === 'string' ? parsed.endYear : DEFAULT_STATE.endYear,
       openAccessOnly:
         typeof parsed.openAccessOnly === 'boolean' ? parsed.openAccessOnly : DEFAULT_STATE.openAccessOnly,
+      minCitations: typeof parsed.minCitations === 'string' ? parsed.minCitations : DEFAULT_STATE.minCitations,
+      publicationTypes,
     };
   } catch {
     return DEFAULT_STATE;
@@ -62,6 +92,11 @@ type SearchContextValue = {
   setEndYear: (value: string) => void;
   openAccessOnly: boolean;
   setOpenAccessOnly: (value: boolean | ((prev: boolean) => boolean)) => void;
+  minCitations: string;
+  setMinCitations: (value: string) => void;
+  publicationTypes: PublicationType[];
+  setPublicationTypes: (value: PublicationType[] | ((prev: PublicationType[]) => PublicationType[])) => void;
+  togglePublicationType: (value: PublicationType) => void;
   maxKeywords: number;
 };
 
@@ -74,6 +109,8 @@ export function SearchProvider({ children }: { children: ReactNode }) {
   const [startYear, setStartYear] = useState(initial.startYear);
   const [endYear, setEndYear] = useState(initial.endYear);
   const [openAccessOnly, setOpenAccessOnly] = useState(initial.openAccessOnly);
+  const [minCitations, setMinCitationsRaw] = useState(initial.minCitations);
+  const [publicationTypes, setPublicationTypes] = useState<PublicationType[]>(initial.publicationTypes);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -84,12 +121,29 @@ export function SearchProvider({ children }: { children: ReactNode }) {
         startYear,
         endYear,
         openAccessOnly,
+        minCitations,
+        publicationTypes,
       };
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     } catch {
       // ignore quota / access errors
     }
-  }, [keywordText, resultsPerKeyword, startYear, endYear, openAccessOnly]);
+  }, [keywordText, resultsPerKeyword, startYear, endYear, openAccessOnly, minCitations, publicationTypes]);
+
+  const setMinCitations = (value: string) => {
+    if (value === '') {
+      setMinCitationsRaw('');
+      return;
+    }
+    const digits = value.replace(/[^0-9]/g, '');
+    setMinCitationsRaw(digits);
+  };
+
+  const togglePublicationType = (value: PublicationType) => {
+    setPublicationTypes(prev =>
+      prev.includes(value) ? prev.filter(entry => entry !== value) : [...prev, value],
+    );
+  };
 
   const setKeywordText = (value: string) => {
     const lines = value.split(/\r?\n/);
@@ -120,6 +174,11 @@ export function SearchProvider({ children }: { children: ReactNode }) {
     setEndYear,
     openAccessOnly,
     setOpenAccessOnly,
+    minCitations,
+    setMinCitations,
+    publicationTypes,
+    setPublicationTypes,
+    togglePublicationType,
     maxKeywords: MAX_KEYWORDS,
   };
 

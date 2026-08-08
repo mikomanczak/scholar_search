@@ -1,5 +1,5 @@
 import { FormEvent } from 'react';
-import { useSearch } from '../context/SearchContext';
+import { PUBLICATION_TYPES, useSearch } from '../context/SearchContext';
 import HighlightedQueryEditor from './HighlightedQueryEditor';
 import InfoIcon from './InfoIcon';
 import QuerySyntaxHelp from './QuerySyntaxHelp';
@@ -17,6 +17,10 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
     setEndYear,
     openAccessOnly,
     setOpenAccessOnly,
+    minCitations,
+    setMinCitations,
+    publicationTypes,
+    togglePublicationType,
     maxKeywords,
   } = useSearch();
 
@@ -85,6 +89,41 @@ export default function InputForm({ onSearch }: { onSearch: () => void }) {
                 onChange={event => setEndYear(event.target.value)}
                 placeholder="To"
               />
+            </div>
+          </fieldset>
+
+          <label className="field-label" htmlFor="min-citations">
+            Minimum number of citations (optional)
+          </label>
+          <input
+            id="min-citations"
+            type="number"
+            min="0"
+            step="1"
+            inputMode="numeric"
+            value={minCitations}
+            onChange={event => setMinCitations(event.target.value)}
+            placeholder="Any"
+          />
+
+          <fieldset className="publication-types-fieldset">
+            <legend>Publication type (optional)</legend>
+            <div className="publication-types">
+              {PUBLICATION_TYPES.map(type => {
+                const selected = publicationTypes.includes(type);
+                return (
+                  <button
+                    key={type}
+                    type="button"
+                    role="checkbox"
+                    aria-checked={selected}
+                    className={`chip${selected ? ' chip--selected' : ''}`}
+                    onClick={() => togglePublicationType(type)}
+                  >
+                    {type}
+                  </button>
+                );
+              })}
             </div>
           </fieldset>
 

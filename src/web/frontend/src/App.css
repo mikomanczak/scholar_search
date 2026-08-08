@@ -428,6 +428,48 @@ select {
   color: #8e9bad;
 }
 
+.publication-types-fieldset {
+  padding: 0;
+  border: 0;
+  margin: 0;
+}
+
+.publication-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 6px 12px;
+  border: 1px solid #253348;
+  border-radius: 999px;
+  background: #0b1624;
+  color: #c2cad6;
+  cursor: pointer;
+  font-size: 12px;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease,
+    color 150ms ease;
+}
+
+.chip:hover {
+  border-color: #42536b;
+  background: #101d2b;
+}
+
+.chip--selected {
+  border-color: #2a65eb;
+  background: #2867ef;
+  color: white;
+}
+
+.chip--selected:hover {
+  border-color: #2a65eb;
+  background: #2360db;
+}
+
 .toggle-row {
   display: flex;
   align-items: center;
