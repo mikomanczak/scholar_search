@@ -1,6 +1,7 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
+import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
 const MAX_KEYWORDS = 20;
+const STORAGE_KEY = 'augmented-search:state:v1';
 
 const EXAMPLE_KEYWORDS = [
   'battery electric vehicle',
@@ -11,6 +12,42 @@ const EXAMPLE_KEYWORDS = [
   'battery technology',
   'range anxiety',
 ];
+
+type PersistedState = {
+  keywordText: string;
+  resultsPerKeyword: string;
+  startYear: string;
+  endYear: string;
+  openAccessOnly: boolean;
+};
+
+const DEFAULT_STATE: PersistedState = {
+  keywordText: EXAMPLE_KEYWORDS.join('\n'),
+  resultsPerKeyword: '50',
+  startYear: '2010',
+  endYear: '2024',
+  openAccessOnly: false,
+};
+
+function loadPersistedState(): PersistedState {
+  if (typeof window === 'undefined') return DEFAULT_STATE;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return DEFAULT_STATE;
+    const parsed = JSON.parse(raw) as Partial<PersistedState>;
+    return {
+      keywordText: typeof parsed.keywordText === 'string' ? parsed.keywordText : DEFAULT_STATE.keywordText,
+      resultsPerKeyword:
+        typeof parsed.resultsPerKeyword === 'string' ? parsed.resultsPerKeyword : DEFAULT_STATE.resultsPerKeyword,
+      startYear: typeof parsed.startYear === 'string' ? parsed.startYear : DEFAULT_STATE.startYear,
+      endYear: typeof parsed.endYear === 'string' ? parsed.endYear : DEFAULT_STATE.endYear,
+      openAccessOnly:
+        typeof parsed.openAccessOnly === 'boolean' ? parsed.openAccessOnly : DEFAULT_STATE.openAccessOnly,
+    };
+  } catch {
+    return DEFAULT_STATE;
+  }
+}
 
 type SearchContextValue = {
   keywordText: string;
@@ -31,11 +68,28 @@ type SearchContextValue = {
 const SearchContext = createContext<SearchContextValue | undefined>(undefined);
 
 export function SearchProvider({ children }: { children: ReactNode }) {
-  const [keywordText, setKeywordTextRaw] = useState(EXAMPLE_KEYWORDS.join('\n'));
-  const [resultsPerKeyword, setResultsPerKeyword] = useState('50');
-  const [startYear, setStartYear] = useState('2010');
-  const [endYear, setEndYear] = useState('2024');
-  const [openAccessOnly, setOpenAccessOnly] = useState(false);
+  const initial = useMemo(loadPersistedState, []);
+  const [keywordText, setKeywordTextRaw] = useState(initial.keywordText);
+  const [resultsPerKeyword, setResultsPerKeyword] = useState(initial.resultsPerKeyword);
+  const [startYear, setStartYear] = useState(initial.startYear);
+  const [endYear, setEndYear] = useState(initial.endYear);
+  const [openAccessOnly, setOpenAccessOnly] = useState(initial.openAccessOnly);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const payload: PersistedState = {
+        keywordText,
+        resultsPerKeyword,
+        startYear,
+        endYear,
+        openAccessOnly,
+      };
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch {
+      // ignore quota / access errors
+    }
+  }, [keywordText, resultsPerKeyword, startYear, endYear, openAccessOnly]);
 
   const setKeywordText = (value: string) => {
     const lines = value.split(/\r?\n/);
